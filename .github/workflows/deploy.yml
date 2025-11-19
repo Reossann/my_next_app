@@ -1,0 +1,19 @@
+name: Deploy to Render
+
+on:
+  push:
+    branches:
+      - main  # mainブランチにpushされた時だけ動く
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ここに「npm test」などを追加すれば、テスト合格時のみデプロイできる！
+
+      - name: Trigger Render Deploy
+        # さっき登録した秘密のURLを叩いて、Renderにデプロイ命令を出す
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
