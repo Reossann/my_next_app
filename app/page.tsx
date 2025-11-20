@@ -99,7 +99,7 @@ useEffect(() => {
           onChange={(e) => setNewTitle(e.target.value)}
           placeholder="新しいTodoを入力"
         />
-        <button type="submit">追加します</button>
+        <button type="submit">追加します!!</button>
       </form>
 
       <ul>
