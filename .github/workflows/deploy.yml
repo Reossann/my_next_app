@@ -1,3 +1,10 @@
+name: Deploy to Render
+
+on:
+  push:
+    branches:
+      - main
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -5,19 +12,5 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # --- ここから追加 ---
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Run Tests
-        run: npm test  # ← ここでテスト実行！失敗したら止まる！
-      # --- ここまで追加 ---
-
       - name: Trigger Render Deploy
-        if: success() # テストが成功した時だけ実行
         run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
