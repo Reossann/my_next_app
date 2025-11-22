@@ -1,26 +1,210 @@
-@import "tailwindcss";
+/* --- フォントの読み込み --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* --- 全体のアニメーション定義 --- */
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@keyframes popIn {
+    0% { transform: scale(0.9); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
 }
 
+/* --- ベーススタイル --- */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Poppins', sans-serif;
+    /* 4色の動くグラデーション背景 */
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite; /* 背景をゆっくり動かす */
+    
+    color: #333;
+    margin: 0;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+/* --- ガラスのコンテナ --- */
+.container {
+    /* 磨りガラス効果の真骨頂 */
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(16px); /* 背景をぼかす */
+    -webkit-backdrop-filter: blur(16px);
+    
+    padding: 50px;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.3); /* 薄い白枠でガラス感を出す */
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2); /* 深い影 */
+    
+    width: 100%;
+    max-width: 650px;
+    animation: popIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); /* 登場時のアニメーション */
+}
+
+/* --- タイトル --- */
+h1 {
+    text-align: center;
+    font-size: 3em;
+    font-weight: 800;
+    margin-bottom: 40px;
+    
+    /* 文字自体をグラデーションにする */
+    background: linear-gradient(to right, #12c2e9, #c471ed, #f64f59);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+/* --- 入力エリア --- */
+.form-group {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 35px;
+}
+
+#todo-title {
+    flex-grow: 1;
+    padding: 16px 20px;
+    font-size: 18px;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
+#todo-title:focus {
+    outline: none;
+    border-color: #c471ed;
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(196, 113, 237, 0.2);
+}
+
+/* --- ボタン共通 --- */
+button {
+    padding: 14px 28px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    color: white;
+}
+
+button:active {
+    transform: scale(0.95); /* クリック時に少し凹む */
+}
+
+/* --- 追加ボタン --- */
+#add-todo {
+    background: linear-gradient(45deg, #11998e, #38ef7d);
+    box-shadow: 0 4px 15px rgba(56, 239, 125, 0.4);
+}
+
+#add-todo:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(56, 239, 125, 0.6);
+}
+
+/* --- リスト --- */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* --- リスト項目 --- */
+li {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 16px;
+    border-left: 6px solid #c471ed; /* 左側にアクセントカラー */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    
+    /* リスト追加時のアニメーション */
+    animation: slideIn 0.4s ease-out forwards;
+}
+
+li:hover {
+    transform: translateX(5px) translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 1);
+}
+
+li span {
+    flex-grow: 1;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #444;
+}
+
+/* --- 項目内のボタン --- */
+li button {
+    margin-left: 12px;
+    padding: 10px 16px;
+    font-size: 14px;
+    border-radius: 8px;
+}
+
+/* 更新ボタン */
+li button:first-of-type { 
+    /* 注意: HTMLの並び順によってはfirst/lastが変わります。
+       更新ボタンが左ならこちら */
+    background: linear-gradient(45deg, #f2994a, #f2c94c);
+    box-shadow: 0 4px 10px rgba(242, 201, 76, 0.3);
+}
+
+/* 削除ボタン */
+li button:last-of-type {
+    background: linear-gradient(45deg, #eb3349, #f45c43);
+    box-shadow: 0 4px 10px rgba(235, 51, 73, 0.3);
+}
+
+/* スマホ対応 */
+@media (max-width: 768px) {
+    .container {
+        padding: 30px 20px;
+    }
+    
+    h1 {
+        font-size: 2.2em;
+    }
+
+    .form-group {
+        flex-direction: column;
+    }
+    
+    #add-todo {
+        width: 100%;
+    }
+    
+    li {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+        border-left: none;
+        border-top: 6px solid #c471ed;
+    }
+    
+    li button {
+        margin: 5px 0;
+        width: 100%;
+    }
 }
